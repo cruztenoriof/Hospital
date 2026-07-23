@@ -1,4 +1,13 @@
 package com.francisco.authorizacion.dto;
 
-public record LoginRequest() {
-}
+import jakarta.validation.constraints.NotBlank;
+
+public record LoginRequest(
+
+        @NotBlank(message = "El username es requerido")
+        String username,
+
+        @NotBlank(message = "La contraseña es requerida")
+        String password
+) {}
+

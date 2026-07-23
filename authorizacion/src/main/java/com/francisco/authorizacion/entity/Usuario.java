@@ -1,3 +1,5 @@
+package com.francisco.authorizacion.entity;
+
 import java.util.Set;
 
 import jakarta.persistence.Column;

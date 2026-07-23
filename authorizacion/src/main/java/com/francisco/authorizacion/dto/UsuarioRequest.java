@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
-public record UsuarioResquest(
+public record UsuarioRequest(
 
         @NotBlank(message = "El username es requerido")
         @Size(min = 4, max = 20)

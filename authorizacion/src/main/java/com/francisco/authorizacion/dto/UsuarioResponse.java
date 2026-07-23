@@ -1,4 +1,9 @@
 package com.francisco.authorizacion.dto;
 
-public record UsuarioResponse() {
-}
+import java.util.Set;
+
+public record UsuarioResponse(
+
+        String username,
+        Set<String> roles
+) {}

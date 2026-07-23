@@ -1,4 +1,7 @@
 package com.francisco.authorizacion.dto;
 
-public record CustomErrorResponse() {
-}
+public record CustomErrorResponse(
+        int codigo,
+        String mensaje
+) { }
+
