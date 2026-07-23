@@ -90,7 +90,7 @@ public class Cita {
             throw new IllegalStateException("La fecha de la cita es requerida y debe ser futura");
     }
     public void  eliminar () {
-        validarEliminacionPermitida();
+        validarNoEliminado();
         this.estadoRegistro = EstadoRegistro.Eliminado;
     }
 
@@ -101,16 +101,15 @@ public class Cita {
 
     private void  validarEliminacionPermitida (){
         validarNoEliminado();
-        if (this.estadoCita.isEliminable())
-            throw new IllegalArgumentException("La cita con estado"
-                    + this.estadoCita + " no se puede eliminarse");
+        if (!this.estadoCita.isEliminable()) {
+            throw new IllegalArgumentException("La cita con estado: " + this.estadoCita + " no se puede eliminar.");
+        }
     }
 
     private void  validarActualizacionPermitida (){
         validarNoEliminado();
         if (!this.estadoCita.isActualizable())
-            throw new IllegalArgumentException("La cita con estado"
-                    + this.estadoCita + "no se puede actualizar");
+            throw new IllegalArgumentException("La cita con estado: " + this.estadoCita + " no se puede actualizar");
     }
     public static void validarDatos(
             Long idPaciente, Long idMedico,

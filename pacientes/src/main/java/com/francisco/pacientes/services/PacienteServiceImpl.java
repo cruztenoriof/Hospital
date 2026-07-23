@@ -2,7 +2,6 @@ package com.francisco.pacientes.services;
 
 import com.francisco.commons.dto.pacientes.PacienteRequest;
 import com.francisco.commons.dto.pacientes.PacienteResponse;
-import com.francisco.commons.enums.EspecialidadMedico;
 import com.francisco.commons.enums.EstadoRegistro;
 import com.francisco.commons.exceptions.RecursoNoEncontradoException;
 import com.francisco.pacientes.entity.Paciente;

@@ -108,38 +108,38 @@ public class MedicoServiceImpl implements MedicoService {
         log.info("Validando email único...");
         if (medicoRepository.existsByEmailIgnoreCaseAndEstadoRegistro(
                 request.email().trim(), EstadoRegistro.Activo)) {
-            throw new IllegalArgumentException("Ya existe un médico activo registrado con el email" + request.email());
+            throw new IllegalArgumentException("Ya existe un médico activo registrado con el email: " + request.email());
         }
         log.info("Validando telefono único...");
         if (medicoRepository.existsByTelefonoAndEstadoRegistro(
                 request.telefono().trim(), EstadoRegistro.Activo)) {
-            throw new IllegalArgumentException("Ya existe un médico activo registrado con el telefono" +
-                    request.email());
+            throw new IllegalArgumentException("Ya existe un médico activo registrado con el telefono: " +
+                    request.telefono());
         }
         log.info("Validando cedúla profesional única...");
         if (medicoRepository.existsByCedulaProfesionalIgnoreCaseAndEstadoRegistro(
                 request.cedulaProfesional().trim(), EstadoRegistro.Activo)) {
-            throw new IllegalArgumentException("Ya existe un médico activo con la cedúla profesional" +
-                    request.email());
+            throw new IllegalArgumentException("Ya existe un médico activo con la cedúla profesional: " +
+                    request.cedulaProfesional());
         }
     }
     public void validarCambiosUnicos(MedicoRequest request, Long id) {
         log.info("Validando email único...");
         if (medicoRepository.existsByEmailIgnoreCaseAndEstadoRegistro(
                 request.email().trim(), EstadoRegistro.Activo)) {
-            throw new IllegalArgumentException("Ya existe un médico activo registrado con el email" + request.email());
+            throw new IllegalArgumentException("Ya existe un médico activo registrado con el email: " + request.email());
         }
         log.info("Validando telefono único...");
         if (medicoRepository.existsByTelefonoAndEstadoRegistro(
                 request.telefono().trim(), EstadoRegistro.Activo)) {
-            throw new IllegalArgumentException("Ya existe un médico activo registrado con el telefono" +
+            throw new IllegalArgumentException("Ya existe un médico activo registrado con el telefono: " +
                     request.telefono());
         }
         log.info("Validando cedúla profesional única...");
         if (medicoRepository.existsByCedulaProfesionalIgnoreCaseAndEstadoRegistro(
                 request.cedulaProfesional().trim(), EstadoRegistro.Activo)) {
-            throw new IllegalArgumentException("Ya existe un médico activo con la cedúla profesional" +
-                    request.email());
+            throw new IllegalArgumentException("Ya existe un médico activo con la cedúla profesional: " +
+                    request.cedulaProfesional());
         }
     }
 }
