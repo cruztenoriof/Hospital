@@ -132,8 +132,11 @@ public class CitaServiceImpl implements CitaService {
 
         log.info("Validando si la cita con id {} se puede eliminar según su estado", id);
 
-        if (cita.getEstadoCita() != EstadoCita.CANCELADA) {
-            throw new IllegalArgumentException("La cita solo puede ser eliminada si se encuentra en estado: CANCELADA.");
+        if (cita.getEstadoCita() != EstadoCita.CANCELADA &&
+                cita.getEstadoCita() != EstadoCita.FINALIZADA &&
+                cita.getEstadoCita() != EstadoCita.PENDIENTE) {
+            throw new IllegalArgumentException("La cita solo puede ser eliminada si se encuentra en estado: " +
+                    "PENDIENTE, FINALIZADA, CANCELADA.");
         }
 
         log.info("Eliminando cita con id: {}", id);
@@ -141,8 +144,12 @@ public class CitaServiceImpl implements CitaService {
         cita.eliminar();
 
         log.info("Cita con id {} ha sido marcada como eliminada", id);
-    }
 
+        log.info("Liberando al médico con id: {} debido a la eliminación de la cita", cita.getIdMedico());
+        medicoClient.actualizarDisponibilidad(cita.getIdMedico(), DisponibilidadMedico.DISPONIBLE.getId().longValue());
+
+        log.info("Cita con id {} ha sido dada de baja correctamente", id);
+    }
     private Cita obtenerCitaOException(Long id) {
         log.info("Buscando cita con id: {}", id);
 

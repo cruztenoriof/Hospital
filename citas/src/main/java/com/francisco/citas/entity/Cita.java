@@ -91,7 +91,8 @@ public class Cita {
     }
     public void  eliminar () {
         validarNoEliminado();
-        this.estadoRegistro = EstadoRegistro.Eliminado;
+        if (estadoCita.isEliminable())
+            this.estadoRegistro = EstadoRegistro.Eliminado;
     }
 
     private void  validarNoEliminado (){
