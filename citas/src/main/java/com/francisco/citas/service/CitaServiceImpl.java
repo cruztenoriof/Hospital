@@ -113,13 +113,26 @@ public class CitaServiceImpl implements CitaService {
         if (cita.getEstadoCita() != EstadoCita.PENDIENTE && cita.getEstadoCita() != EstadoCita.CONFIRMADA) {
             throw new IllegalArgumentException("La cita solo puede actualizarse si se encuentra en estado PENDIENTE o CONFIRMADA.");
         }
+        Long idMedicoAnterior = cita.getIdMedico();
+
         log.info("Actualizando cita con id: {}", id);
+        if (!idMedicoAnterior.equals(request.idMedico())) {
+            MedicoResponse nuevoMedico = obtenerMedicoActivo(request.idMedico());
+            validarMedicoDisponible(nuevoMedico);
+        }
         cita.actualizar(
                 request.idPaciente(),
                 request.idMedico(),
                 request.fechaCita(),
                 request.sintomas()
         );
+        if (!idMedicoAnterior.equals(request.idMedico())) {
+            log.info("Liberando al médico anterior con id: {}", idMedicoAnterior);
+            medicoClient.actualizarDisponibilidad(idMedicoAnterior, DisponibilidadMedico.DISPONIBLE.getId().longValue());
+
+            log.info("Actualizando al nuevo médico con id: {} a NO_DISPONIBLE", request.idMedico());
+            medicoClient.actualizarDisponibilidad(request.idMedico(), DisponibilidadMedico.NO_DISPONIBLE.getId().longValue());
+        }
         log.info("Cita actualizada con id: {}", id);
         return citasMapper.entidadAResponse(cita, obtenerPacienteSinEstado(cita.getIdPaciente()),
                 obtenerMedicoSinEstado(cita.getIdMedico()));
