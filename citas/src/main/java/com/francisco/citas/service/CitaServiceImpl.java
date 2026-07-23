@@ -62,7 +62,7 @@ public class CitaServiceImpl implements CitaService {
     public List<CitaResponse> listar() {
         log.info("Listando todas las citas activas");
 
-        return citaRepository.findByEstadoRegistro(EstadoRegistro.Activo).stream().
+        return citaRepository.findAll().stream().
                 map(cita -> citasMapper.entidadAResponse(
                         cita,
                         obtenerPacienteSinEstado(cita.getIdPaciente()),
@@ -192,8 +192,9 @@ public class CitaServiceImpl implements CitaService {
 
     private void validarCitaActivaPaciente(Long idPaciente) {
         log.info("Verificando si el paciente con id {} tiene citas activas simultáneas", idPaciente);
-        if (citaRepository.existsByIdPacienteAndEstadoCitaIn(idPaciente,
-                List.of(EstadoCita.PENDIENTE, EstadoCita.CONFIRMADA, EstadoCita.EN_CURSO))) {
+        if (citaRepository.existsByIdPacienteAndEstadoCitaInAndEstadoRegistro(idPaciente,
+                List.of(EstadoCita.PENDIENTE, EstadoCita.CONFIRMADA, EstadoCita.EN_CURSO), EstadoRegistro.Activo))
+        {
             throw new IllegalArgumentException("El paciente ya cuenta con una cita activa " +
                     "(Pendiente, Confirmada o En Curso).");
         }
