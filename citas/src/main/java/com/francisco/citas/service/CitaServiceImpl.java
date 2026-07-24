@@ -42,6 +42,7 @@ public class CitaServiceImpl implements CitaService {
         log.info("Actualizando estado de la cita con id: {}", idCita);
 
         EstadoCita nuevoEstado = EstadoCita.obtenerCitaporCodigo(idEstadoCita);
+
         cita.actualizarEstadoCita(nuevoEstado);
 
         if (nuevoEstado == EstadoCita.CANCELADA || nuevoEstado == EstadoCita.FINALIZADA) {
@@ -49,13 +50,19 @@ public class CitaServiceImpl implements CitaService {
                     cita.getIdMedico(), nuevoEstado);
             medicoClient.actualizarDisponibilidad(cita.getIdMedico(),
                     DisponibilidadMedico.DISPONIBLE.getId().longValue());
-        } else if (nuevoEstado == EstadoCita.CONFIRMADA || nuevoEstado == EstadoCita.EN_CURSO) {
-            log.info("Actualizando al médico con id: {} a no disponible por estado de cita {}",
-                    cita.getIdMedico(), nuevoEstado);
+
+        } else if (nuevoEstado == EstadoCita.EN_CURSO) {
+            log.info("Actualizando al médico con id: {} a EN_CONSULTA por estado de cita en curso",
+                    cita.getIdMedico());
+            medicoClient.actualizarDisponibilidad(cita.getIdMedico(),
+                    DisponibilidadMedico.EN_CONSULTA.getId().longValue());
+
+        } else if (nuevoEstado == EstadoCita.CONFIRMADA) {
+            log.info("Actualizando al médico con id: {} a NO_DISPONIBLE por cita confirmada",
+                    cita.getIdMedico());
             medicoClient.actualizarDisponibilidad(cita.getIdMedico(),
                     DisponibilidadMedico.NO_DISPONIBLE.getId().longValue());
         }
-        log.info("Estado de la cita {} actualizado correctamente", cita.getId());
     }
     @Override
     @Transactional(readOnly = true)
@@ -150,6 +157,9 @@ public class CitaServiceImpl implements CitaService {
                 cita.getEstadoCita() != EstadoCita.PENDIENTE) {
             throw new IllegalArgumentException("La cita solo puede ser eliminada si se encuentra en estado: " +
                     "PENDIENTE, FINALIZADA, CANCELADA.");
+        }
+        if (cita.getEstadoCita() == EstadoCita.CONFIRMADA || cita.getEstadoCita() == EstadoCita.EN_CURSO) {
+            throw new IllegalStateException("No se puede eliminar la cita ni liberar al médico mientras esté en estado CONFIRMADA o EN_CURSO.");
         }
 
         log.info("Eliminando cita con id: {}", id);

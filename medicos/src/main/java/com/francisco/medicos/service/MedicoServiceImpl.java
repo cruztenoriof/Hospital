@@ -93,9 +93,15 @@ public class MedicoServiceImpl implements MedicoService {
     @Override
     public void eliminar(Long id) {
         Medico medico = obtenerMedicoActivoPorExcepcion(id);
+        if (medico.getDisponibilidad() != null &&
+                (medico.getDisponibilidad().equals(DisponibilidadMedico.NO_DISPONIBLE) ||
+                        medico.getDisponibilidad().equals(DisponibilidadMedico.EN_CONSULTA))) {
+            throw new IllegalStateException("No se puede eliminar un médico si se encuentra con citas en estado CONFIRMADA o EN_CURSO.");
+        }
+
         log.info("Eliminando Médico con id: {}", id);
         medico.eliminar();
-    log.info("Medico con id {} ha sido eliminado", id);
+        log.info("Medico con id {} ha sido eliminado", id);
     }
 
     private Medico obtenerMedicoActivoPorExcepcion(Long id) {
