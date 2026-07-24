@@ -18,7 +18,6 @@ public class CitaController extends CommonController<CitaRequest, CitaResponse, 
     public CitaController(CitaService service) {
         super(service);
     }
-
     @PatchMapping("/{idCita}/estado/{idEstado}")
     public ResponseEntity<Void> actualizarEstadoCita(
             @PathVariable @Positive (message = "El idCita debe ser positivo") Long idCita,

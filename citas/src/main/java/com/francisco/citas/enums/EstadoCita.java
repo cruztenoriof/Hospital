@@ -18,7 +18,7 @@ public enum EstadoCita {
             return Set.of();
         }
     },
-    CONFIRMADA(2L, "Confrimada por el paciente", true, false) {
+    CONFIRMADA(2L, "Confirmada por el paciente", true, false) {
         @Override
         public Set<EstadoCita> puedeCambiar() {
             return EnumSet.of(EN_CURSO, CANCELADA);

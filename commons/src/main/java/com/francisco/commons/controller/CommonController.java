@@ -22,7 +22,7 @@ public class CommonController <RQ, RS, S extends CrudService<RS, RQ>> {
 
     @GetMapping("/{id}")
     public ResponseEntity<RS> obtenerPorId(
-            @PathVariable @Positive(message = "EL IDE DEBER SER POSITIVO") Long id) {
+            @PathVariable @Positive(message = "EL ID DEBER SER POSITIVO") Long id) {
         return ResponseEntity.ok(service.obtenerPorId(id));
     }
 
